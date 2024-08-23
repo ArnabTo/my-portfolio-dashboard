@@ -55,7 +55,7 @@ const ProjectForm = () => {
                 <h1 className='text-white text-5xl font-extrabold text-center my-10'>My Personal <span className="font-extrabold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Dashboard</span></h1>
             </div>
             <Form {...form} >
-                <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 lg:w-full mx-auto space-y-8 border-white border-2  p-5 rounded-lg">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="w-full lg:w-1/2 mx-3 md:mx-auto space-y-8 border-white border-2 px-5 py-8 rounded-lg">
                     <FormField
                         control={form.control}
                         name="title"
