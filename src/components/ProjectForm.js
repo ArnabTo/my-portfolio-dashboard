@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button"
 import { useForm } from 'react-hook-form';
 import { Input } from './ui/input';
 import axios from 'axios';
+import { useToast } from './ui/use-toast';
 const ProjectForm = () => {
 
+    const { toast } = useToast();
     const form = useForm({
         defaultValues: {
             title: '',
@@ -23,26 +25,43 @@ const ProjectForm = () => {
     const onSubmit = async (data) => {
         try {
             const response = await axios.post('/api/post-projects', data);
-            console.log('Response:', response.data);
+            console.log('Response:', response);
+
+            if(response?.data?.success){
+                toast({
+                    title: 'Success',
+                    description: 'Project was uploaded successfully',
+                    variant: 'default',
+                })
+            }else{
+                toast({
+                    title: 'Failed',
+                    description: response.data.message,
+                    variant: 'destructive',
+                })
+            }
         } catch (error) {
-            console.error('Error submitting form:', error);
+           toast({
+               title: 'Error',
+               description: error.message,
+               variant: 'destructive',
+           })
         }
-        console.log(data)
     };
 
     return (
         <div className='max-w-6xl mx-auto'>
             <div>
-                <h1 className='text-white text-4xl font-extrabold text-center my-10'>My Personal Dashboard</h1>
+                <h1 className='text-white text-5xl font-extrabold text-center my-10'>My Personal <span className="font-extrabold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Dashboard</span></h1>
             </div>
             <Form {...form} >
-                <form onSubmit={form.handleSubmit(onSubmit)} className="w-1/2 lg:w-full mx-auto space-y-8">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 lg:w-full mx-auto space-y-8 border-white border-2  p-5 rounded-lg">
                     <FormField
                         control={form.control}
                         name="title"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Project Title</FormLabel>
+                                <FormLabel className='text-white'>📃Title</FormLabel>
                                 <FormControl>
                                     <Input placeholder="title" {...field} />
                                 </FormControl>
@@ -55,7 +74,7 @@ const ProjectForm = () => {
                         name="about"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Project Title</FormLabel>
+                                <FormLabel className='text-white'>📝 About</FormLabel>
                                 <FormControl>
                                     <Input placeholder="title" {...field} />
                                 </FormControl>
@@ -68,7 +87,7 @@ const ProjectForm = () => {
                         name="description"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Project Title</FormLabel>
+                                <FormLabel className='text-white'>📝 Description</FormLabel>
                                 <FormControl>
                                     <Input placeholder="title" {...field} />
                                 </FormControl>
@@ -81,7 +100,7 @@ const ProjectForm = () => {
                         name="image"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Project Title</FormLabel>
+                                <FormLabel className='text-white'>🖼️ Thumbnail</FormLabel>
                                 <FormControl>
                                     <Input placeholder="title" {...field} />
                                 </FormControl>
@@ -94,7 +113,7 @@ const ProjectForm = () => {
                         name="github"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Project Title</FormLabel>
+                                <FormLabel className='text-white'>🔗 GitHub link</FormLabel>
                                 <FormControl>
                                     <Input placeholder="title" {...field} />
                                 </FormControl>
@@ -107,7 +126,7 @@ const ProjectForm = () => {
                         name="live"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Project Title</FormLabel>
+                                <FormLabel className='text-white'>🔗 Preview link</FormLabel>
                                 <FormControl>
                                     <Input placeholder="title" {...field} />
                                 </FormControl>
@@ -120,7 +139,7 @@ const ProjectForm = () => {
                         name="technologies"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Project Title</FormLabel>
+                                <FormLabel className='text-white'>⚙️ Tech Stack</FormLabel>
                                 <FormControl>
                                     <Input placeholder="title" {...field} />
                                 </FormControl>
@@ -128,9 +147,15 @@ const ProjectForm = () => {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Submit</Button>
+                    <div class="p-[2px] bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-lg">
+                        <div class="bg-gray-900 text-white rounded-lg p-4">
+                            <Button className="w-full bg-zinc-800" type="submit">Submit</Button>
+                        </div>
+                    </div>
+
                 </form>
             </Form>
+
         </div>
     );
 };
